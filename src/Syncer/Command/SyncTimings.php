@@ -58,13 +58,11 @@ class SyncTimings extends Command
      * @param array $projects
      */
     public function __construct(
-        SerializerInterface $serializer,
         TogglClient $togglClient,
         ReportsClient $reportsClient,
         InvoiceNinjaClient $invoiceNinjaClient,
         array $projects
     ) {
-        $this->serializer = $serializer;
         $this->togglClient = $togglClient;
         $this->reportsClient = $reportsClient;
         $this->invoiceNinjaClient = $invoiceNinjaClient;

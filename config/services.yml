@@ -15,7 +15,6 @@ services:
     syncer.command.sync_timings:
         class: Syncer\Command\SyncTimings
         arguments:
-            - '@serializer'
             - '@toggl.client.toggl'
             - '@toggl.client.reports'
             - '@invoice_ninja.client'
