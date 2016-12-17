@@ -22,5 +22,8 @@
         "psr-4": {
             "": "src"
         }
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^3.2"
     }
 }
