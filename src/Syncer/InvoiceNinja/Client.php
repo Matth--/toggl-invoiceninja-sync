@@ -63,6 +63,6 @@ class Client
             ]
         ]);
 
-        return json_decode($res);
+        return json_decode($res->getBody());
     }
 }

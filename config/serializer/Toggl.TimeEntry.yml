@@ -49,11 +49,13 @@ Syncer\Dto\Toggl\TimeEntry:
         task:
             type: string
             exclude: false
-        billable:
+        billableText:
             type: string
+            serialized_name: billable
             exclude: false
-        isBillable:
+        billable:
             type: boolean
+            serialized_name: is_billable
             exclude: false
         cur:
             type: string
