@@ -1,10 +1,9 @@
 <?php
-declare(strict_types=1);
 
 namespace Syncer\Command;
 
-use AJT\Toggl\ReportsClient;
-use AJT\Toggl\TogglClient;
+use Syncer\Toggl\ReportsClient;
+use Syncer\Toggl\TogglClient;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,11 +23,6 @@ class SyncTimings extends Command
      * @var SymfonyStyle
      */
     private $io;
-
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
 
     /**
      * @var TogglClient
@@ -74,9 +68,9 @@ class SyncTimings extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
+        $workSpaces = $this->togglClient->getWorkspaces();
 
-        $response = $this->serializer->deserialize($this->togglClient->GetWorkspaces()->getBody(), 'array<Syncer\Dto\Workspace>', 'json');
+        $weeklyReport = $this->reportsClient->getWeeklyReport($workSpaces[0]->getId());
 
-        VarDumper::dump($response);
     }
 }

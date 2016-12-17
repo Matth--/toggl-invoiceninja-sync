@@ -1,16 +1,4 @@
 services:
-    toggl.client.reporting:
-        class: AJT\Toggl\ReportsClient
-        factory: ['AJT\Toggl\ReportsClient', factory]
-        arguments:
-            - { api_key: '%toggl.api_key%', debug: '%debug%', command.params: {command.response_processing: 'raw'} }
-
-    toggl.client.toggl:
-        class: AJT\Toggl\TogglClient
-        factory: ['AJT\Toggl\TogglClient', factory]
-        arguments:
-            - { api_key: '%toggl.api_key%', debug: '%debug%', command.params: {command.response_processing: 'raw'} }
-
     serializer:
         class: Syncer\Serializer\Serializer
         arguments:
@@ -29,4 +17,28 @@ services:
         arguments:
             - '@serializer'
             - '@toggl.client.toggl'
-            - '@toggl.client.reporting'
+            - '@toggl.client.reports'
+
+    toggl.guzzle.toggl:
+        class: GuzzleHttp\Client
+        arguments:
+            - { base_uri: '%toggl.toggl_base_uri%' , debug: '%debug%'}
+
+    toggl.guzzl.reports:
+        class: GuzzleHttp\Client
+        arguments:
+            - { base_uri: '%toggl.reports_base_uri%', debug: '%debug%' }
+
+    toggl.client.toggl:
+        class: Syncer\Toggl\TogglClient
+        arguments:
+            - '@toggl.guzzle.toggl'
+            - '@serializer'
+            - '%toggl.api_key%'
+
+    toggl.client.reports:
+        class: Syncer\Toggl\ReportsClient
+        arguments:
+            - '@toggl.guzzl.reports'
+            - '@serializer'
+            - '%toggl.api_key%'

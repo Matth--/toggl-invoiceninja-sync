@@ -17,6 +17,9 @@ namespace Syncer\Dto;
  */
 class Workspace
 {
+    /**
+     * @var integer
+     */
     private $id;
 
     /**
