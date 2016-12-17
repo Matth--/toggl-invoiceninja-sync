@@ -8,8 +8,7 @@
         "symfony/config": "^3.2",
         "symfony/yaml": "^3.2",
         "jms/serializer": "^1.4",
-        "doctrine/cache": "^1.6",
-        "symfony/var-dumper": "^3.2"
+        "doctrine/cache": "^1.6"
     },
     "authors": [
         {

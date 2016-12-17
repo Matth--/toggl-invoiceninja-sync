@@ -1,0 +1,10 @@
+Syncer\Dto\InvoiceNinja\Task:
+    exclusion_policy: ALL
+    properties:
+        description:
+            type: string
+            exclude: false
+        timeLog:
+            type: string
+            exclude: false
+            serializedName: time_log

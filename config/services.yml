@@ -18,6 +18,8 @@ services:
             - '@serializer'
             - '@toggl.client.toggl'
             - '@toggl.client.reports'
+            - '@invoice_ninja.client'
+            - '%projects%'
 
     toggl.guzzle.toggl:
         class: GuzzleHttp\Client
@@ -42,3 +44,15 @@ services:
             - '@toggl.guzzl.reports'
             - '@serializer'
             - '%toggl.api_key%'
+
+    invoice_ninja.guzzle:
+        class: GuzzleHttp\Client
+        arguments:
+            - { base_uri: '%invoice_ninja.base_uri%', debug: '%debug%'}
+
+    invoice_ninja.client:
+        class: Syncer\InvoiceNinja\Client
+        arguments:
+            - '@invoice_ninja.guzzle'
+            - '@serializer'
+            - '%invoice_ninja.api_key%'

@@ -1,0 +1,23 @@
+Syncer\Dto\Toggl\DetailedReport:
+    exclusion_policy: ALL
+    properties:
+        totalGrand:
+            type: integer
+            serializedName: total_grand
+            exclude: false
+        totalBillable:
+            type: integer
+            serializedName: total_billable
+            exclude: false
+        totalCount:
+            type: integer
+            serializedName: total_count
+            exclude: false
+        perPage:
+            type: integer
+            serializedName: per_page
+            exlude: false
+        data:
+            type: array<Syncer\Dto\Toggl\TimeEntry>
+            serializedName: data
+            exclude: false

@@ -1,19 +1,12 @@
 <?php
 
-/*
- * This file is property of Wijs.be
- *
- * For the full copyright and license information, please view the license
- * file that was distributed with this source code.
- */
-
-namespace Syncer\Dto;
+namespace Syncer\Dto\Toggl;
 
 /**
  * Class Workspace
  * @package Syncer\Dto
  *
- * @author Matthieu Calie <matthieu.calie@wijs.be>
+ * @author Matthieu Calie <matthieu@calie.be>
  */
 class Workspace
 {

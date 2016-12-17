@@ -2,4 +2,14 @@ parameters:
     debug: false
     serializer.config_dir: %kernel.root_dir%/config/serializer
     seriaizer.cache_dir: %kernel.root_dir%/cache
-    toggl.api_key: %api_key%
+
+    toggl.api_key: KEY
+    toggl.toggl_base_uri: https://www.toggl.com/api/
+    toggl.reports_base_uri: https://www.toggl.com/reports/api/
+
+    invoice_ninja.base_uri: http://invoiceninja.dev/api/
+    invoice_ninja.api_key: KEY
+
+    projects:
+         - first_project
+         - second_project

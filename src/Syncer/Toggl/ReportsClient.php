@@ -4,7 +4,7 @@ namespace Syncer\Toggl;
 
 use GuzzleHttp\Client;
 use JMS\Serializer\SerializerInterface;
-use Symfony\Component\VarDumper\VarDumper;
+use Syncer\Dto\Toggl\DetailedReport;
 
 /**
  * Class ReportsClient
@@ -44,13 +44,17 @@ class ReportsClient
         $this->api_key = $api_key;
     }
 
-    public function getWeeklyReport($workSpaceId)
+    /**
+     * @param $workspaceId
+     * @return array|\JMS\Serializer\scalar|object
+     */
+    public function getDetailedReport($workspaceId)
     {
-        $res = $this->client->request('GET', self::VERSION . '/weekly', [
+        $res = $this->client->request('GET', self::VERSION . '/details', [
             'auth' => [$this->api_key, 'api_token'],
-            'query' => ['user_agent' => 'matthieu@calie.be', 'workspace_id' => $workSpaceId]
+            'query' => ['user_agent' => 'matthieu@calie.be', 'workspace_id' => $workspaceId]
         ]);
 
-        Vardumper::dump(json_decode($res->getBody()->getContents()));die;
+        return $this->serializer->deserialize($res->getBody(), DetailedReport::class, 'json');
     }
 }

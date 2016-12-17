@@ -52,6 +52,6 @@ class TogglClient
             'auth' => [$this->api_key, 'api_token'],
         ]);
 
-        return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Workspace>', 'json');
+        return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Toggl\Workspace>', 'json');
     }
 }

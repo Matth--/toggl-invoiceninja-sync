@@ -1,4 +1,4 @@
-Syncer\Dto\Workspace:
+Syncer\Dto\Toggl\Workspace:
     exclusion_policy: ALL
     properties:
         id:
