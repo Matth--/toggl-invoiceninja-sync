@@ -1,0 +1,32 @@
+services:
+    toggl.client.reporting:
+        class: AJT\Toggl\ReportsClient
+        factory: ['AJT\Toggl\ReportsClient', factory]
+        arguments:
+            - { api_key: '%toggl.api_key%', debug: '%debug%', command.params: {command.response_processing: 'raw'} }
+
+    toggl.client.toggl:
+        class: AJT\Toggl\TogglClient
+        factory: ['AJT\Toggl\TogglClient', factory]
+        arguments:
+            - { api_key: '%toggl.api_key%', debug: '%debug%', command.params: {command.response_processing: 'raw'} }
+
+    serializer:
+        class: Syncer\Serializer\Serializer
+        arguments:
+            - %serializer.config_dir%
+            - %seriaizer.cache_dir%
+        calls:
+            - [setup]
+
+    syncer.application:
+        class: Symfony\Component\Console\Application
+        calls:
+            - [add, ['@syncer.command.sync_timings']]
+
+    syncer.command.sync_timings:
+        class: Syncer\Command\SyncTimings
+        arguments:
+            - '@serializer'
+            - '@toggl.client.toggl'
+            - '@toggl.client.reporting'

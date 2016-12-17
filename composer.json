@@ -1,0 +1,25 @@
+{
+    "name": "matthieu/invoicing-syncer",
+    "require": {
+        "symfony/console": "^3.2",
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/dependency-injection": "^3.2",
+        "symfony/config": "^3.2",
+        "symfony/yaml": "^3.2",
+        "jms/serializer": "^1.4",
+        "doctrine/cache": "^1.6",
+        "ajt/guzzle-toggl": "^0.12.0",
+        "symfony/var-dumper": "^3.2"
+    },
+    "authors": [
+        {
+            "name": "matthieucalie",
+            "email": "matthieu@calie.be"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src"
+        }
+    }
+}

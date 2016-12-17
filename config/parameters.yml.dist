@@ -1,0 +1,5 @@
+parameters:
+    debug: false
+    serializer.config_dir: %kernel.root_dir%/config/serializer
+    seriaizer.cache_dir: %kernel.root_dir%/cache
+    toggl.api_key: %api_key%
