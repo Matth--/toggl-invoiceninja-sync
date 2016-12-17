@@ -1,0 +1,13 @@
+language: php
+
+php:
+  - 7.0
+
+before_install:
+    - composer selfupdate
+
+install:
+    - composer update --no-scripts --no-interaction
+
+script:
+    - bin/phpspec run spec

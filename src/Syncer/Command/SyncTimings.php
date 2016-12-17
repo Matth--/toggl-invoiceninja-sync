@@ -108,8 +108,6 @@ class SyncTimings extends Command
                     $this->io->success('Task Created');
                 }
             }
-
         }
-
     }
 }
