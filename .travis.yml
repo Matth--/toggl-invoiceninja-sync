@@ -10,4 +10,4 @@ install:
     - composer update --no-scripts --no-interaction
 
 script:
-    - vendor/bin/phpspec run spec
+    - bin/phpspec run spec
