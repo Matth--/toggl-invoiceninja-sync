@@ -93,12 +93,12 @@ class TimeEntry
     /**
      * @var string
      */
-    private $billable;
+    private $billableText;
 
     /**
      * @var boolean
      */
-    private $isBillable;
+    private $billable;
 
     /**
      * @var string
@@ -369,33 +369,33 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getBillable()
+    public function getBillableText()
     {
-        return $this->billable;
+        return $this->billableText;
     }
 
     /**
-     * @param string $billable
+     * @param string $billableText
      */
-    public function setBillable($billable)
+    public function setBillableText($billableText)
     {
-        $this->billable = $billable;
+        $this->billableText = $billableText;
     }
 
     /**
      * @return bool
      */
-    public function isIsBillable()
+    public function isBillable()
     {
-        return $this->isBillable;
+        return $this->billable;
     }
 
     /**
-     * @param bool $isBillable
+     * @param bool $billable
      */
-    public function setIsBillable($isBillable)
+    public function setBillable($billable)
     {
-        $this->isBillable = $isBillable;
+        $this->billable = $billable;
     }
 
     /**
