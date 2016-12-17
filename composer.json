@@ -1,7 +1,8 @@
 {
     "name": "matthieu/toggl-invoiceninja-sync",
     "description": "Sync toggl loggings to invoiceninja",
-    "licence": "MIT",
+    "license": "MIT",
+    "type": "project",
     "require": {
         "symfony/console": "^3.2",
         "guzzlehttp/guzzle": "^6.2",
