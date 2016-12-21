@@ -11,7 +11,8 @@
         "symfony/config": "^3.2",
         "symfony/yaml": "^3.2",
         "jms/serializer": "^1.4",
-        "doctrine/cache": "^1.6"
+        "doctrine/cache": "^1.6",
+        "nesbot/carbon": "^1.21"
     },
     "authors": [
         {
@@ -25,7 +26,8 @@
         }
     },
     "require-dev": {
-        "phpspec/phpspec": "^3.2"
+        "phpspec/phpspec": "^3.2",
+        "symfony/var-dumper": "^3.2"
     },
     "config": {
         "bin-dir": "bin"

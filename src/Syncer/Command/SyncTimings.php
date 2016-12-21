@@ -9,7 +9,7 @@ use Syncer\Dto\Toggl\Workspace;
 use Syncer\InvoiceNinja\Client as InvoiceNinjaClient;
 use Syncer\Toggl\ReportsClient;
 use Syncer\Toggl\TogglClient;
-use JMS\Serializer\SerializerInterface;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,7 +51,6 @@ class SyncTimings extends Command
     /**
      * SyncTimings constructor.
      *
-     * @param SerializerInterface $serializer
      * @param TogglClient $togglClient
      * @param ReportsClient $reportsClient
      * @param InvoiceNinjaClient $invoiceNinjaClient
@@ -66,7 +65,7 @@ class SyncTimings extends Command
         $this->togglClient = $togglClient;
         $this->reportsClient = $reportsClient;
         $this->invoiceNinjaClient = $invoiceNinjaClient;
-        $this->projects = array_fill_keys($projects, '');
+        $this->projects = $projects;
 
         parent::__construct();
     }
@@ -101,6 +100,10 @@ class SyncTimings extends Command
                     $task = new Task();
                     $task->setDescription($timeEntry->getDescription());
                     $task->setTimeLog(json_encode([[$timeEntry->getStart()->getTimestamp(), $timeEntry->getEnd()->getTimestamp()]]));
+
+                    if ($this->projects[$timeEntry->getProject()]) {
+                        $task->setClientId($this->projects[$timeEntry->getProject()]);
+                    }
 
                     $this->invoiceNinjaClient->saveNewTask($task);
                     $this->io->success('Task Created');

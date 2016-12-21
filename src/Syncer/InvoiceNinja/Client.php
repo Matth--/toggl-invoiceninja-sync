@@ -63,6 +63,6 @@ class Client
             ]
         ]);
 
-        return $res->getBody();
+        return $this->serializer->deserialize($res->getBody(), Task::class, 'json');
     }
 }

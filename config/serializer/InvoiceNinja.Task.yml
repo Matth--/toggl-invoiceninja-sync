@@ -8,3 +8,7 @@ Syncer\Dto\InvoiceNinja\Task:
             type: string
             exclude: false
             serializedName: time_log
+        clientId:
+            type: integer
+            exclude: false
+            serializedName: client_id
