@@ -28,6 +28,7 @@ class ClientSpec extends ObjectBehavior
 
         $serializer->serialize($task, 'json')->shouldBeCalled();
         $client->request('POST', 'v1/tasks', Argument::any())->shouldBeCalled()->willReturn($response);
+        $serializer->deserialize('body', Task::class, 'json')->shouldBeCalled()->willReturn('body');
 
         $this->saveNewTask($task)->shouldReturn('body');
 
