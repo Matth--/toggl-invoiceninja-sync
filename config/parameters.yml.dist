@@ -13,5 +13,5 @@ parameters:
     # Key = name in toggl
     # Value= id from invoiceninja
     projects:
-         - first_project
-         - second_project
+         first_project: 1
+         second_project: 2

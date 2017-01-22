@@ -77,7 +77,7 @@ class SyncTimings extends Command
     {
         $this
             ->setName('sync:timings')
-            ->setDescription('Syncs timings from toggl to calie invoicing')
+            ->setDescription('Syncs timings from toggl to invoiceninja')
         ;
     }
 
