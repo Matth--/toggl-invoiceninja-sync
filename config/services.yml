@@ -1,11 +1,14 @@
 services:
-    serializer:
-        class: Syncer\Serializer\Serializer
+    serializer_factory:
+        class: Syncer\Factory\SerializerFactory
         arguments:
-            - %serializer.config_dir%
-            - %seriaizer.cache_dir%
-        calls:
-            - [setup]
+            - '%debug%'
+            - '%serializer.config_dir%'
+            - '%serializer.cache_dir%'
+
+    serializer:
+        class: JMS\Serializer\Serializer
+        factory: 'serializer_factory:createSerializer'
 
     syncer.application:
         class: Symfony\Component\Console\Application

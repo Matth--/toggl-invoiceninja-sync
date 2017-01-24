@@ -1,3 +1,4 @@
 config/parameters.yml
 vendor
 bin
+coverage.xml

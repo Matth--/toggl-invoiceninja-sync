@@ -102,19 +102,14 @@ class SyncTimings extends Command
                 $timeEntrySent = false;
 
                 // Log the entry if the client key exists
-                if (is_array($this->clients)
-                    && array_key_exists($timeEntry->getClient(), $this->clients)
-                ) {
+                if ($this->timeEntryCanBeLoggedByConfig($this->clients, $timeEntry->getClient(), $timeEntrySent)) {
                     $this->logTask($timeEntry, $this->clients, $timeEntry->getClient());
 
                     $timeEntrySent = true;
                 }
 
                 // Log the entry if the project key exists
-                if (is_array($this->projects)
-                    && array_key_exists($timeEntry->getProject(), $this->projects)
-                    && !$timeEntrySent
-                ) {
+                if ($this->timeEntryCanBeLoggedByConfig($this->projects, $timeEntry->getProject(), $timeEntrySent)) {
                     $this->logTask($timeEntry, $this->projects, $timeEntry->getProject());
 
                     $timeEntrySent = true;
@@ -125,6 +120,22 @@ class SyncTimings extends Command
                 }
             }
         }
+    }
+
+    /**
+     * @param $config
+     * @param $entryKey
+     * @param $hasAlreadyBeenSent
+     *
+     * @return bool
+     */
+    private function timeEntryCanBeLoggedByConfig($config, $entryKey, $hasAlreadyBeenSent)
+    {
+        if ($hasAlreadyBeenSent) {
+            return false;
+        }
+
+        return (is_array($config) && array_key_exists($entryKey, $config));
     }
 
     /**

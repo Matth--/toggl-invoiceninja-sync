@@ -45,7 +45,7 @@ class TogglClient
     }
 
     /**
-     * @return array|\JMS\Serializer\scalar|object|Workspace[]
+     * @return array|Workspace[]
      */
     public function getWorkspaces()
     {
