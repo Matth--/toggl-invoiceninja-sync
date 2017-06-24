@@ -2,3 +2,11 @@ build:
     environment:
         php:
             version: 7.1.1
+
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpspec run -f progress -c phpspec-ci.yml '
+                coverage:
+                    file: 'clover.xml'
+                    format: 'clover'
