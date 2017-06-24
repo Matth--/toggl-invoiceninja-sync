@@ -48,7 +48,7 @@ class DetailedReport
      */
     public function setTotalGrand($totalGrand)
     {
-        $this->totalgGrand = $totalGrand;
+        $this->totalGrand = $totalGrand;
     }
 
     /**
