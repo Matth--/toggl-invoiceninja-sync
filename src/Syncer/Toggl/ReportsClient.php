@@ -49,7 +49,7 @@ class ReportsClient
      * Get detailed report from since yesterday
      *
      * @param $workspaceId
-     * @return array|\JMS\Serializer\scalar|object
+     * @return array|\JMS\Serializer\scalar|object|DetailedReport
      */
     public function getDetailedReport($workspaceId)
     {

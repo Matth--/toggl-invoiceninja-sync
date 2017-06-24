@@ -4,6 +4,7 @@ namespace Syncer\Toggl;
 
 use GuzzleHttp\Client;
 use JMS\Serializer\SerializerInterface;
+use Syncer\Dto\Toggl\Workspace;
 
 /**
  * Class TogglClient
@@ -44,7 +45,7 @@ class TogglClient
     }
 
     /**
-     * @return array|\JMS\Serializer\scalar|object
+     * @return array|\JMS\Serializer\scalar|object|Workspace[]
      */
     public function getWorkspaces()
     {

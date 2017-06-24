@@ -25,6 +25,11 @@ parameters:
     invoice_ninja.base_uri: {your-invoice-ninja-url}/api/
     invoice_ninja.api_key: KEY
 
+    # Key = name in toggl (Has to be correct)
+    # Value = client id from invoiceninja
+    clients:
+         client_name: 1
+
     # Key = name in toggl
     # Value= id from invoiceninja
     projects:
@@ -32,7 +37,9 @@ parameters:
          second_project: 2
 ```
 
-The key-value pairs in the `projects` variable are important. The key should be the project/task name from toggl. The value should be the client id from invoiceninja.
+The key-value pairs in the `clients` variable are important. The key should be the **exact** client name from toggl. The value should be the client id from invoiceninja.
+If the time entry was matched with the `clients` variable it skips the part where it checks the `projects` variable. This varialbe acts the same way as the `clients
+ variable but instead of matching the client name, it matches the **exact** project name.
 
 ## Run the command
 to run the command just run:

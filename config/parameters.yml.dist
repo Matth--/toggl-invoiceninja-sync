@@ -10,6 +10,11 @@ parameters:
     invoice_ninja.base_uri: http://invoiceninja.dev/api/
     invoice_ninja.api_key: KEY
 
+    # Key = name in toggl (Has to be correct)
+    # Value = client id from invoiceninja
+    clients:
+         client_name: 1
+
     # Key = name in toggl
     # Value= id from invoiceninja
     projects:

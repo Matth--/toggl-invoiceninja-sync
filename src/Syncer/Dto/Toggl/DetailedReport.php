@@ -100,7 +100,7 @@ class DetailedReport
     }
 
     /**
-     * @return array
+     * @return array|TimeEntry[]
      */
     public function getData()
     {

@@ -3,9 +3,7 @@
 namespace Syncer\Command;
 
 use Syncer\Dto\InvoiceNinja\Task;
-use Syncer\Dto\Toggl\DetailedReport;
 use Syncer\Dto\Toggl\TimeEntry;
-use Syncer\Dto\Toggl\Workspace;
 use Syncer\InvoiceNinja\Client as InvoiceNinjaClient;
 use Syncer\Toggl\ReportsClient;
 use Syncer\Toggl\TogglClient;
@@ -46,6 +44,11 @@ class SyncTimings extends Command
     /**
      * @var array
      */
+    private $clients;
+
+    /**
+     * @var array
+     */
     private $projects;
 
     /**
@@ -54,17 +57,20 @@ class SyncTimings extends Command
      * @param TogglClient $togglClient
      * @param ReportsClient $reportsClient
      * @param InvoiceNinjaClient $invoiceNinjaClient
+     * @param array $clients
      * @param array $projects
      */
     public function __construct(
         TogglClient $togglClient,
         ReportsClient $reportsClient,
         InvoiceNinjaClient $invoiceNinjaClient,
-        array $projects
+        $clients,
+        $projects
     ) {
         $this->togglClient = $togglClient;
         $this->reportsClient = $reportsClient;
         $this->invoiceNinjaClient = $invoiceNinjaClient;
+        $this->clients = $clients;
         $this->projects = $projects;
 
         parent::__construct();
@@ -89,26 +95,84 @@ class SyncTimings extends Command
         $this->io = new SymfonyStyle($input, $output);
         $workspaces = $this->togglClient->getWorkspaces();
 
-        /** @var Workspace $workspace */
         foreach ($workspaces as $workspace) {
-            /** @var DetailedReport $detailedReport */
             $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId());
 
-            /** @var TimeEntry $timeEntry */
             foreach($detailedReport->getData() as $timeEntry) {
-                if (array_key_exists($timeEntry->getProject(), $this->projects)) {
-                    $task = new Task();
-                    $task->setDescription($timeEntry->getDescription());
-                    $task->setTimeLog(json_encode([[$timeEntry->getStart()->getTimestamp(), $timeEntry->getEnd()->getTimestamp()]]));
+                $timeEntrySent = false;
 
-                    if ($this->projects[$timeEntry->getProject()]) {
-                        $task->setClientId($this->projects[$timeEntry->getProject()]);
-                    }
+                // Log the entry if the client key exists
+                if (is_array($this->clients)
+                    && array_key_exists($timeEntry->getClient(), $this->clients)
+                ) {
+                    $this->logTask($timeEntry, $this->clients, $timeEntry->getClient());
 
-                    $this->invoiceNinjaClient->saveNewTask($task);
-                    $this->io->success('Task Created');
+                    $timeEntrySent = true;
+                }
+
+                // Log the entry if the project key exists
+                if (is_array($this->projects)
+                    && array_key_exists($timeEntry->getProject(), $this->projects)
+                    && !$timeEntrySent
+                ) {
+                    $this->logTask($timeEntry, $this->projects, $timeEntry->getProject());
+
+                    $timeEntrySent = true;
+                }
+
+                if ($timeEntrySent) {
+                    $this->io->success('TimeEntry ('. $timeEntry->getDescription() . ') sent to toggl');
                 }
             }
         }
+    }
+
+    /**
+     * @param TimeEntry $entry
+     * @param array $config
+     * @param $key
+     */
+    private function logTask(TimeEntry $entry, array $config, $key)
+    {
+        $task = new Task();
+
+        $task->setDescription($this->buildTaskDescription($entry));
+        $task->setTimeLog($this->buildTimeLog($entry));
+        $task->setClientId($config[$key]);
+
+        $this->invoiceNinjaClient->saveNewTask($task);
+    }
+
+    /**
+     * @param TimeEntry $entry
+     *
+     * @return string
+     */
+    private function buildTaskDescription(TimeEntry $entry)
+    {
+        $description = '';
+
+        if ($entry->getProject()) {
+            $description .= $entry->getProject() . ': ';
+        }
+
+        $description .= $entry->getDescription();
+
+        return $description;
+    }
+
+    /**
+     * @param TimeEntry $entry
+     *
+     * @return string
+     */
+    private function buildTimeLog(TimeEntry $entry)
+    {
+        $timeLog = [
+            $entry->getStart()->getTimestamp(),
+            $entry->getEnd()->getTimestamp(),
+        ];
+
+        return \GuzzleHttp\json_encode($timeLog);
     }
 }
