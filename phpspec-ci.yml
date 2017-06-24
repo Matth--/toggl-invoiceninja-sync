@@ -9,3 +9,4 @@ extensions:
     blacklist:
       - src/Syncer/Command
       - src/Syncer/Dto
+      - src/Syncer/Factory
