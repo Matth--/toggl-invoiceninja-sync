@@ -6,7 +6,7 @@ build:
     tests:
         override:
             -
-                command: 'vendor/bin/phpspec run -f progress -c phpspec-ci.yml '
+                command: 'vendor/bin/phpspec run -c phpspec-ci.yml '
                 coverage:
                     file: 'clover.xml'
                     format: 'clover'
