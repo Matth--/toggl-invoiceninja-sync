@@ -95,6 +95,12 @@ class SyncTimings extends Command
         $this->io = new SymfonyStyle($input, $output);
         $workspaces = $this->togglClient->getWorkspaces();
 
+        if (!is_array($workspaces) || count($workspaces) === 0) {
+            $this->io->error('No workspaces to sync.');
+
+            return;
+        }
+
         foreach ($workspaces as $workspace) {
             $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId());
 
@@ -116,7 +122,7 @@ class SyncTimings extends Command
                 }
 
                 if ($timeEntrySent) {
-                    $this->io->success('TimeEntry ('. $timeEntry->getDescription() . ') sent to toggl');
+                    $this->io->success('TimeEntry ('. $timeEntry->getDescription() . ') sent to InvoiceNinja');
                 }
             }
         }

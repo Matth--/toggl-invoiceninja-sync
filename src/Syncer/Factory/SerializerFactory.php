@@ -34,7 +34,7 @@ class SerializerFactory
      * @param string $configDir
      * @param string $cacheDir
      */
-    function __construct(bool $debug, string $configDir, string $cacheDir)
+    public function __construct(bool $debug, string $configDir, string $cacheDir)
     {
         $this->debug = $debug;
         $this->configDir = $configDir;
