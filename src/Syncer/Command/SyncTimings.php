@@ -185,10 +185,10 @@ class SyncTimings extends Command
      */
     private function buildTimeLog(TimeEntry $entry)
     {
-        $timeLog = [
+        $timeLog = [[
             $entry->getStart()->getTimestamp(),
             $entry->getEnd()->getTimestamp(),
-        ];
+        ]];
 
         return \GuzzleHttp\json_encode($timeLog);
     }
