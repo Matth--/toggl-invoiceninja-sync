@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Toggl;
 
@@ -48,10 +48,10 @@ class ReportsClient
     /**
      * Get detailed report from since yesterday
      *
-     * @param $workspaceId
+     * @param int $workspaceId
      * @return array|\JMS\Serializer\scalar|object|DetailedReport
      */
-    public function getDetailedReport($workspaceId)
+    public function getDetailedReport(int $workspaceId)
     {
         $res = $this->client->request('GET', self::VERSION . '/details', [
             'auth' => [$this->api_key, 'api_token'],

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Dto\Toggl;
 
@@ -38,7 +38,7 @@ class DetailedReport
     /**
      * @return int
      */
-    public function getTotalGrand()
+    public function getTotalGrand(): int
     {
         return $this->totalGrand;
     }
@@ -46,7 +46,7 @@ class DetailedReport
     /**
      * @param int $totalGrand
      */
-    public function setTotalGrand($totalGrand)
+    public function setTotalGrand(int $totalGrand)
     {
         $this->totalGrand = $totalGrand;
     }
@@ -54,7 +54,7 @@ class DetailedReport
     /**
      * @return int
      */
-    public function getTotalBillable()
+    public function getTotalBillable(): int
     {
         return $this->totalBillable;
     }
@@ -62,7 +62,7 @@ class DetailedReport
     /**
      * @param int $totalBillable
      */
-    public function setTotalBillable($totalBillable)
+    public function setTotalBillable(int $totalBillable)
     {
         $this->totalBillable = $totalBillable;
     }
@@ -70,7 +70,7 @@ class DetailedReport
     /**
      * @return int
      */
-    public function getTotalCount()
+    public function getTotalCount(): int
     {
         return $this->totalCount;
     }
@@ -78,7 +78,7 @@ class DetailedReport
     /**
      * @param int $totalCount
      */
-    public function setTotalCount($totalCount)
+    public function setTotalCount(int $totalCount)
     {
         $this->totalCount = $totalCount;
     }
@@ -86,7 +86,7 @@ class DetailedReport
     /**
      * @return int
      */
-    public function getPerPage()
+    public function getPerPage(): int
     {
         return $this->perPage;
     }
@@ -94,7 +94,7 @@ class DetailedReport
     /**
      * @param int $perPage
      */
-    public function setPerPage($perPage)
+    public function setPerPage(int $perPage)
     {
         $this->perPage = $perPage;
     }
@@ -102,7 +102,7 @@ class DetailedReport
     /**
      * @return array|TimeEntry[]
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -110,7 +110,7 @@ class DetailedReport
     /**
      * @param array $data
      */
-    public function setData($data)
+    public function setData(array $data)
     {
         $this->data = $data;
     }

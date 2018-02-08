@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Dto\Toggl;
 
@@ -113,7 +113,7 @@ class TimeEntry
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -121,7 +121,7 @@ class TimeEntry
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -129,7 +129,7 @@ class TimeEntry
     /**
      * @return int
      */
-    public function getPid()
+    public function getPid(): int
     {
         return $this->pid;
     }
@@ -137,7 +137,7 @@ class TimeEntry
     /**
      * @param int $pid
      */
-    public function setPid($pid)
+    public function setPid(int $pid)
     {
         $this->pid = $pid;
     }
@@ -145,7 +145,7 @@ class TimeEntry
     /**
      * @return int
      */
-    public function getTid()
+    public function getTid(): int
     {
         return $this->tid;
     }
@@ -153,7 +153,7 @@ class TimeEntry
     /**
      * @param int $tid
      */
-    public function setTid($tid)
+    public function setTid(int $tid)
     {
         $this->tid = $tid;
     }
@@ -161,7 +161,7 @@ class TimeEntry
     /**
      * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
@@ -169,7 +169,7 @@ class TimeEntry
     /**
      * @param int $uid
      */
-    public function setUid($uid)
+    public function setUid(int $uid)
     {
         $this->uid = $uid;
     }
@@ -177,7 +177,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -185,7 +185,7 @@ class TimeEntry
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription(string $description)
     {
         $this->description = $description;
     }
@@ -193,7 +193,7 @@ class TimeEntry
     /**
      * @return \DateTime
      */
-    public function getStart()
+    public function getStart(): \DateTime
     {
         return $this->start;
     }
@@ -201,7 +201,7 @@ class TimeEntry
     /**
      * @param \DateTime $start
      */
-    public function setStart($start)
+    public function setStart(\DateTime $start)
     {
         $this->start = $start;
     }
@@ -209,7 +209,7 @@ class TimeEntry
     /**
      * @return \DateTime
      */
-    public function getEnd()
+    public function getEnd(): \DateTime
     {
         return $this->end;
     }
@@ -217,7 +217,7 @@ class TimeEntry
     /**
      * @param \DateTime $end
      */
-    public function setEnd($end)
+    public function setEnd(\DateTime $end)
     {
         $this->end = $end;
     }
@@ -225,7 +225,7 @@ class TimeEntry
     /**
      * @return \DateTime
      */
-    public function getUpdated()
+    public function getUpdated(): \DateTime
     {
         return $this->updated;
     }
@@ -233,7 +233,7 @@ class TimeEntry
     /**
      * @param \DateTime $updated
      */
-    public function setUpdated($updated)
+    public function setUpdated(\DateTime $updated)
     {
         $this->updated = $updated;
     }
@@ -241,7 +241,7 @@ class TimeEntry
     /**
      * @return int
      */
-    public function getDuration()
+    public function getDuration(): int
     {
         return $this->duration;
     }
@@ -249,7 +249,7 @@ class TimeEntry
     /**
      * @param int $duration
      */
-    public function setDuration($duration)
+    public function setDuration(int $duration)
     {
         $this->duration = $duration;
     }
@@ -257,7 +257,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getUser()
+    public function getUser(): string
     {
         return $this->user;
     }
@@ -265,7 +265,7 @@ class TimeEntry
     /**
      * @param string $user
      */
-    public function setUser($user)
+    public function setUser(string $user)
     {
         $this->user = $user;
     }
@@ -273,7 +273,7 @@ class TimeEntry
     /**
      * @return bool
      */
-    public function isUseStop()
+    public function isUseStop(): bool
     {
         return $this->useStop;
     }
@@ -281,7 +281,7 @@ class TimeEntry
     /**
      * @param bool $useStop
      */
-    public function setUseStop($useStop)
+    public function setUseStop(bool $useStop)
     {
         $this->useStop = $useStop;
     }
@@ -289,7 +289,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getClient()
+    public function getClient(): string
     {
         return $this->client;
     }
@@ -297,7 +297,7 @@ class TimeEntry
     /**
      * @param string $client
      */
-    public function setClient($client)
+    public function setClient(string $client)
     {
         $this->client = $client;
     }
@@ -305,7 +305,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getProject()
+    public function getProject(): string
     {
         return $this->project;
     }
@@ -313,7 +313,7 @@ class TimeEntry
     /**
      * @param string $project
      */
-    public function setProject($project)
+    public function setProject(string $project)
     {
         $this->project = $project;
     }
@@ -321,7 +321,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getProjectColor()
+    public function getProjectColor(): string
     {
         return $this->projectColor;
     }
@@ -329,7 +329,7 @@ class TimeEntry
     /**
      * @param string $projectColor
      */
-    public function setProjectColor($projectColor)
+    public function setProjectColor(string $projectColor)
     {
         $this->projectColor = $projectColor;
     }
@@ -337,7 +337,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getProjectHexColor()
+    public function getProjectHexColor(): string
     {
         return $this->projectHexColor;
     }
@@ -345,7 +345,7 @@ class TimeEntry
     /**
      * @param string $projectHexColor
      */
-    public function setProjectHexColor($projectHexColor)
+    public function setProjectHexColor(string $projectHexColor)
     {
         $this->projectHexColor = $projectHexColor;
     }
@@ -353,7 +353,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getTask()
+    public function getTask(): string
     {
         return $this->task;
     }
@@ -361,7 +361,7 @@ class TimeEntry
     /**
      * @param string $task
      */
-    public function setTask($task)
+    public function setTask(string $task)
     {
         $this->task = $task;
     }
@@ -369,7 +369,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getBillableText()
+    public function getBillableText(): string
     {
         return $this->billableText;
     }
@@ -377,7 +377,7 @@ class TimeEntry
     /**
      * @param string $billableText
      */
-    public function setBillableText($billableText)
+    public function setBillableText(string $billableText)
     {
         $this->billableText = $billableText;
     }
@@ -385,7 +385,7 @@ class TimeEntry
     /**
      * @return bool
      */
-    public function isBillable()
+    public function isBillable(): bool
     {
         return $this->billable;
     }
@@ -393,7 +393,7 @@ class TimeEntry
     /**
      * @param bool $billable
      */
-    public function setBillable($billable)
+    public function setBillable(bool $billable)
     {
         $this->billable = $billable;
     }
@@ -401,7 +401,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getCur()
+    public function getCur(): string
     {
         return $this->cur;
     }
@@ -409,7 +409,7 @@ class TimeEntry
     /**
      * @param string $cur
      */
-    public function setCur($cur)
+    public function setCur(string $cur)
     {
         $this->cur = $cur;
     }
@@ -417,7 +417,7 @@ class TimeEntry
     /**
      * @return array
      */
-    public function getTags()
+    public function getTags(): array
     {
         return $this->tags;
     }
@@ -425,7 +425,7 @@ class TimeEntry
     /**
      * @param array $tags
      */
-    public function setTags($tags)
+    public function setTags(array $tags)
     {
         $this->tags = $tags;
     }

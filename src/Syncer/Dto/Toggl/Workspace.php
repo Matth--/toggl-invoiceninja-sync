@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Dto\Toggl;
 
@@ -18,7 +18,7 @@ class Workspace
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -26,7 +26,7 @@ class Workspace
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }

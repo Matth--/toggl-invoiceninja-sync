@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Factory;
 
+use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 
 /**
@@ -42,9 +43,9 @@ class SerializerFactory
     }
 
     /**
-     * @return \JMS\Serializer\Serializer
+     * @return Serializer
      */
-    public function createSerializer()
+    public function createSerializer(): Serializer
     {
         return SerializerBuilder::create()
             ->addMetadataDir($this->configDir, 'Syncer\Dto')

@@ -1,7 +1,7 @@
 parameters:
     debug: false
-    serializer.config_dir: %kernel.root_dir%/config/serializer
-    serializer.cache_dir: %kernel.root_dir%/cache
+    serializer.config_dir: '%kernel.root_dir%/config/serializer'
+    serializer.cache_dir: '%kernel.root_dir%/cache'
 
     toggl.api_key: KEY
     toggl.toggl_base_uri: https://www.toggl.com/api/

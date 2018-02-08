@@ -10,7 +10,8 @@ set the correct parameters in config/parameters.yml
 
 ## Installation
 
-- Clone the repository
+- Clone or download the repo
+- Use the latest tagged release
 - run `composer install`
 
 Now fill in the parameters
@@ -29,11 +30,13 @@ parameters:
 
     # Key = name in toggl (Has to be correct)
     # Value = client id from invoiceninja
+    # Use '[]' if you don't need any config here
     clients:
          client_name: 1
 
     # Key = name in toggl
     # Value= id from invoiceninja
+    # Use '[]' if you don't need any config here
     projects:
          first_project: 1
          second_project: 2
@@ -44,8 +47,22 @@ If the time entry was matched with the `clients` variable it skips the part wher
  variable but instead of matching the client name, it matches the **exact** project name.
 
 ## Run the command
+
 to run the command just run:
 
-```php
+```bash
 php syncer sync:timings
 ```
+
+## Run as cronjob
+
+As this command syncs the tasks from the current day, this cronjob setting will run the command daily at 23:55.
+
+```bash
+55 23 * * * /path/to/php /path/to/syncer sync:timings
+```
+
+## Roadmap
+
+- Support for Invoiceninja projects (now it just links project to client as this was written when no projects existed in invoiceninja)
+- Next major release will use Symfony 4 components.

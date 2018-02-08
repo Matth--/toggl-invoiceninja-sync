@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Syncer\Command;
 
@@ -129,13 +129,13 @@ class SyncTimings extends Command
     }
 
     /**
-     * @param $config
-     * @param $entryKey
-     * @param $hasAlreadyBeenSent
+     * @param array $config
+     * @param string $entryKey
+     * @param bool $hasAlreadyBeenSent
      *
      * @return bool
      */
-    private function timeEntryCanBeLoggedByConfig($config, $entryKey, $hasAlreadyBeenSent)
+    private function timeEntryCanBeLoggedByConfig(array $config, string $entryKey, bool $hasAlreadyBeenSent): bool
     {
         if ($hasAlreadyBeenSent) {
             return false;
@@ -147,9 +147,11 @@ class SyncTimings extends Command
     /**
      * @param TimeEntry $entry
      * @param array $config
-     * @param $key
+     * @param string $key
+     *
+     * @return void
      */
-    private function logTask(TimeEntry $entry, array $config, $key)
+    private function logTask(TimeEntry $entry, array $config, string $key)
     {
         $task = new Task();
 
@@ -165,7 +167,7 @@ class SyncTimings extends Command
      *
      * @return string
      */
-    private function buildTaskDescription(TimeEntry $entry)
+    private function buildTaskDescription(TimeEntry $entry): string
     {
         $description = '';
 
@@ -183,7 +185,7 @@ class SyncTimings extends Command
      *
      * @return string
      */
-    private function buildTimeLog(TimeEntry $entry)
+    private function buildTimeLog(TimeEntry $entry): string
     {
         $timeLog = [[
             $entry->getStart()->getTimestamp(),
