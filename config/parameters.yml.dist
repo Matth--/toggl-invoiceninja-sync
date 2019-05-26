@@ -15,11 +15,11 @@ parameters:
 
     # Key = name in toggl (Has to be correct)
     # Value = client id from invoiceninja
-    clients:
-         client_name: 1
+    # clients:
+    #     client_name: 1
 
     # Key = name in toggl
     # Value= id from invoiceninja
-    projects:
-         first_project: 1
-         second_project: 2
+    # projects:
+    #     first_project: 1
+    #     second_project: 2
