@@ -228,24 +228,28 @@ class SyncTimings extends Command
 
         foreach ($this->togglClients as $togglClient)
         {
-            $found = false;
-            foreach ($invoiceNinjaClients as $invoiceNinjaClient)
+            if (!isset($this->projects[$togglProject->getName()]))
             {
-                if ($invoiceNinjaClient->getIsDeleted() == false && strcasecmp($togglClient->getName(), $invoiceNinjaClient->getName()) == 0)
-                {
-                    $clients[$invoiceNinjaClient->getName()] = $invoiceNinjaClient->getId();
-                    $found = true;
+                $found = false;
+                    foreach ($invoiceNinjaClients as $invoiceNinjaClient)
+                    {
+                        if ($invoiceNinjaClient->getIsDeleted() == false && strcasecmp($togglClient->getName(), $invoiceNinjaClient->getName()) == 0)
+                        {
+                            $clients[$invoiceNinjaClient->getName()] = $invoiceNinjaClient->getId();
+                            $found = true;
+                        }
+                    }
                 }
-            }
-            if (!$found)
-            {
-                $client = new InvoiceNinjaClientDto();
+                if (!$found)
+                {
+                    $client = new InvoiceNinjaClientDto();
 
-                $client->setName($togglClient->getName());
+                    $client->setName($togglClient->getName());
 
-                $clients[$togglClient->getName()] = $this->invoiceNinjaClient->saveNewClient($client)->getId();
+                    $clients[$togglClient->getName()] = $this->invoiceNinjaClient->saveNewClient($client)->getId();
 
-                $this->io->success('Client ('. $togglClient->getName() . ') created in InvoiceNinja');
+                    $this->io->success('Client ('. $togglClient->getName() . ') created in InvoiceNinja');
+                }
             }
         }
 
@@ -261,30 +265,33 @@ class SyncTimings extends Command
 
         foreach ($togglProjects as $togglProject)
         {
-            $found = false;
-            foreach ($invoiceNinjaProjects as $invoiceNinjaProject)
+            if (!isset($this->projects[$togglProject->getName()]))
             {
-                if ($invoiceNinjaProject->getIsDeleted() == false && strcasecmp($togglProject->getName(), $invoiceNinjaProject->getName()) == 0)
+                $found = false;
+                foreach ($invoiceNinjaProjects as $invoiceNinjaProject)
                 {
-                    $projects[$invoiceNinjaProject->getName()] = $invoiceNinjaProject->getId();
-                    $found = true;
+                    if ($invoiceNinjaProject->getIsDeleted() == false && strcasecmp($togglProject->getName(), $invoiceNinjaProject->getName()) == 0)
+                    {
+                        $projects[$invoiceNinjaProject->getName()] = $invoiceNinjaProject->getId();
+                        $found = true;
+                    }
                 }
-            }
-            if (!$found)
-            {
-                $project = new InvoiceNinjaProject();
-
-                $project->setName($togglProject->getName());
-
-                foreach ($this->togglClients as $togglClient)
+                if (!$found)
                 {
-                    if ($togglClient->getWid() == $workspaceId && $togglClient->getId() == $togglProject->getCid())
-                        $project->setClientId($this->clients[$togglClient->getName()]);
+                    $project = new InvoiceNinjaProject();
+
+                    $project->setName($togglProject->getName());
+
+                    foreach ($this->togglClients as $togglClient)
+                    {
+                        if ($togglClient->getWid() == $workspaceId && $togglClient->getId() == $togglProject->getCid())
+                            $project->setClientId($this->clients[$togglClient->getName()]);
+                    }
+
+                    $projects[$togglProject->getName()] = $this->invoiceNinjaClient->saveNewProject($project)->getId();
+
+                    $this->io->success('Project ('. $togglProject->getName() . ') created in InvoiceNinja');
                 }
-
-                $projects[$togglProject->getName()] = $this->invoiceNinjaClient->saveNewProject($project)->getId();
-
-                $this->io->success('Project ('. $togglProject->getName() . ') created in InvoiceNinja');
             }
         }
 
