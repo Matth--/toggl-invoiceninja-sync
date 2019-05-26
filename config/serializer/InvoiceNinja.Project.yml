@@ -1,17 +1,15 @@
-Syncer\Dto\InvoiceNinja\Task:
+Syncer\Dto\InvoiceNinja\Project:
     exclusion_policy: ALL
     properties:
-        description:
+        id:
+            type: integer
+            exclude: false
+        name:
             type: string
             exclude: false
-        timeLog:
-            type: string
-            exclude: false
-            serializedName: time_log
         clientId:
             type: integer
             exclude: false
-            serializedName: client_id
-        projectId:
-            type: integer
+        isDeleted:
+            type: boolean
             exclude: false

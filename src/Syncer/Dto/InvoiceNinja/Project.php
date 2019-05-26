@@ -3,12 +3,12 @@
 namespace Syncer\Dto\InvoiceNinja;
 
 /**
- * Class Client
+ * Class Project
  * @package Syncer\Dto\InvoiceNinja
  *
  * @author Clayton Liddell <admin@clayliddell.com>
  */
-class Client
+class Project
 {
     /**
      * @var integer
@@ -16,26 +16,30 @@ class Client
     private $id;
 
     /**
-     * @var String
+     * @var string
      */
     private $name;
+
+    /**
+     * @var integer
+     */
+    private $clientId;
 
     /**
      * @var bool
      */
     private $isDeleted;
 
-
     /**
-     * @return mixed
+     * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId(int $id)
     {
@@ -43,19 +47,35 @@ class Client
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName(): String
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param mixed $name
+     * @param string $name
      */
-    public function setName(String $name)
+    public function setName(string $name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getClientId(): int
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * @param int $clientId
+     */
+    public function setClientId(int $clientId)
+    {
+        $this->clientId = $clientId;
     }
 
     /**

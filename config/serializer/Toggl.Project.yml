@@ -1,12 +1,12 @@
-Syncer\Dto\InvoiceNinja\Client:
+Syncer\Dto\Toggl\Project:
     exclusion_policy: ALL
     properties:
         id:
             type: integer
             exclude: false
+        cid:
+            type: integer
+            exclude: false
         name:
             type: string
-            exclude: false
-        isDeleted:
-            type: boolean
             exclude: false

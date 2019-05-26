@@ -1,0 +1,6 @@
+Syncer\Dto\InvoiceNinja\ProjectWrapper:
+    exclusion_policy: ALL
+    properties:
+        data:
+            type: Syncer\Dto\InvoiceNinja\Project
+            exclude: false

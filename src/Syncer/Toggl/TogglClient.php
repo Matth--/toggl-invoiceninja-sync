@@ -67,4 +67,16 @@ class TogglClient
 
         return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Toggl\Client>', 'json');
     }
+
+    /**
+     * @return array|Project[]
+     */
+    public function getProjectsForWorkspace($workspaceId)
+    {
+        $response = $this->client->request('GET', self::VERSION . '/workspaces/' . $workspaceId . '/projects', [
+            'auth' => [$this->api_key, 'api_token'],
+        ]);
+
+        return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Toggl\Project>', 'json');
+    }
 }

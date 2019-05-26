@@ -3,12 +3,12 @@
 namespace Syncer\Dto\Toggl;
 
 /**
- * Class Client
+ * Class Project
  * @package Syncer\Dto\Toggl
  *
  * @author Clayton Liddell <admin@clayliddell.com>
  */
-class Client
+class Project
 {
     /**
      * @var integer
@@ -18,7 +18,7 @@ class Client
     /**
      * @var integer
      */
-    private $wid;
+    private $cid;
 
     /**
      * @var String
@@ -44,17 +44,17 @@ class Client
     /**
      * @return mixed
      */
-    public function getWid(): int
+    public function getCid(): int
     {
-        return $this->wid;
+        return $this->cid;
     }
 
     /**
-     * @param mixed $wid
+     * @param mixed $cid
      */
-    public function setWid(int $wid)
+    public function setCid(int $cid)
     {
-        $this->wid = $wid;
+        $this->cid = $cid;
     }
 
     /**

@@ -6,6 +6,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use JMS\Serializer\SerializerInterface;
 use Syncer\Dto\InvoiceNinja\Task;
 use Syncer\Dto\InvoiceNinja\Client;
+use Syncer\Dto\InvoiceNinja\Project;
 
 /**
  * Class InvoiceNinjaClient
@@ -68,6 +69,64 @@ class InvoiceNinjaClient
     }
 
     /**
+     * @param Project $project
+     *
+     * @return mixed
+     */
+    public function saveNewProject(Project $project)
+    {
+        $data = $this->serializer->serialize($project, 'json');
+
+        $res = $this->client->request('POST', self::VERSION . '/projects', [
+            'body' => $data,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Ninja-Token' => $this->api_token,
+                'X-Requested-With' => 'XMLHttpRequest',
+            ]
+        ]);
+
+        return $this->serializer->deserialize($res->getBody(), 'Syncer\Dto\InvoiceNinja\ProjectWrapper', 'json')->getData();
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return mixed
+     */
+    public function saveNewClient(Client $client)
+    {
+        $data = $this->serializer->serialize($client, 'json');
+
+        $res = $this->client->request('POST', self::VERSION . '/clients', [
+            'body' => $data,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Ninja-Token' => $this->api_token,
+                'X-Requested-With' => 'XMLHttpRequest',
+            ]
+        ]);
+
+        return $this->serializer->deserialize($res->getBody(), 'Syncer\Dto\InvoiceNinja\ClientWrapper', 'json')->getData();
+    }
+
+    /**
+     * @return array|Project[]
+     */
+    public function getProjects()
+    {
+        $response = $this->client->request('GET', self::VERSION . '/projects', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Ninja-Token' => $this->api_token,
+                'X-Requested-With' => 'XMLHttpRequest',
+            ]
+        ]);
+
+        return $this->serializer->deserialize($response->getBody(), 'Syncer\Dto\InvoiceNinja\ProjectsWrapper', 'json')->getData();
+    }
+
+    /**
      * @return array|Client[]
      */
     public function getClients()
@@ -81,6 +140,5 @@ class InvoiceNinjaClient
         ]);
 
         return $this->serializer->deserialize($response->getBody(), 'Syncer\Dto\InvoiceNinja\ClientsWrapper', 'json')->getData();
-
     }
 }

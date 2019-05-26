@@ -26,6 +26,11 @@ class Task
     private $clientId;
 
     /**
+     * @var integer
+     */
+    private $projectId;
+
+    /**
      * @return string
      */
     public function getDescription(): string
@@ -71,5 +76,21 @@ class Task
     public function setClientId(int $clientId)
     {
         $this->clientId = $clientId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProjectId(): int
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @param int $projectId
+     */
+    public function setProjectId(int $projectId)
+    {
+        $this->projectId = $projectId;
     }
 }

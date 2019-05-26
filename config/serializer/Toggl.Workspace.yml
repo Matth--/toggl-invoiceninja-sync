@@ -3,7 +3,7 @@ Syncer\Dto\Toggl\Workspace:
     properties:
         id:
             type: integer
-            exlude: false
+            exclude: false
         name:
             type: string
             exclude: false

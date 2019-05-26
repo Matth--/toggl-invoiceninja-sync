@@ -3,4 +3,4 @@ Syncer\Dto\InvoiceNinja\ClientsWrapper:
     properties:
         data:
             type: array<Syncer\Dto\InvoiceNinja\Client>
-            exlude: false
+            exclude: false

@@ -7,6 +7,9 @@ parameters:
     toggl.toggl_base_uri: https://www.toggl.com/api/
     toggl.reports_base_uri: https://www.toggl.com/reports/api/
 
+    toggl.time_entries_storage_dir: '%kernel.root_dir%/storage/'
+    toggl.time_entries_storage_file: 'sent-time-entries'
+
     invoice_ninja.base_uri: http://invoiceninja.dev/api/
     invoice_ninja.api_key: KEY
 

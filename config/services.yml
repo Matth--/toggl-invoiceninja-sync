@@ -23,6 +23,8 @@ services:
             - '@invoice_ninja.client'
             - '%clients%'
             - '%projects%'
+            - '%toggl.time_entries_storage_dir%'
+            - '%toggl.time_entries_storage_file%'
 
     toggl.guzzle.toggl:
         class: GuzzleHttp\Client

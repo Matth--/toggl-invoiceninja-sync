@@ -3,7 +3,10 @@ Syncer\Dto\Toggl\Client:
     properties:
         id:
             type: integer
-            exlude: false
+            exclude: false
+        wid:
+            type: integer
+            exclude: false
         name:
             type: string
             exclude: false

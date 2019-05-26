@@ -4,6 +4,8 @@ namespace Syncer\Command;
 
 use Syncer\Dto\InvoiceNinja\Task;
 use Syncer\Dto\Toggl\TimeEntry;
+use Syncer\Dto\InvoiceNinja\Client as InvoiceNinjaClientDto;
+use Syncer\Dto\InvoiceNinja\Project as InvoiceNinjaProject;
 use Syncer\InvoiceNinja\InvoiceNinjaClient;
 use Syncer\Toggl\ReportsClient;
 use Syncer\Toggl\TogglClient;
@@ -30,6 +32,11 @@ class SyncTimings extends Command
      * @var TogglClient
      */
     private $togglClient;
+
+    /**
+     * @var TogglClients
+     */
+    private $togglClients;
 
     /**
      * @var ReportsClient
@@ -65,13 +72,17 @@ class SyncTimings extends Command
         ReportsClient $reportsClient,
         InvoiceNinjaClient $invoiceNinjaClient,
         $clients,
-        $projects
+        $projects,
+        String $storageDir,
+        String $storageFileName
     ) {
         $this->togglClient = $togglClient;
         $this->reportsClient = $reportsClient;
         $this->invoiceNinjaClient = $invoiceNinjaClient;
         $this->clients = $clients;
         $this->projects = $projects;
+        $this->storageDir = $storageDir;
+        $this->storageFileName = $storageFileName;
         $this->retrieveSentTimeEntries();
 
         parent::__construct();
@@ -105,6 +116,7 @@ class SyncTimings extends Command
         foreach ($workspaces as $workspace) {
             $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId());
             $this->clients = array_merge($this->clients, $this->retrieveClientsForWorkspace($workspace->getId()));
+            $this->projects = array_merge($this->projects, $this->retrieveProjectsForWorkspace($workspace->getId()));
 
             foreach($detailedReport->getData() as $timeEntry) {
                 $timeEntrySent = false;
@@ -114,7 +126,7 @@ class SyncTimings extends Command
 
                 // Log the entry if the client key exists
                 if ($this->timeEntryCanBeLoggedByConfig($this->clients, $timeEntry->getClient(), $timeEntrySent)) {
-                    $this->logTask($timeEntry, $this->clients, $timeEntry->getClient());
+                    $this->logTask($timeEntry, $this->clients, $timeEntry->getClient(), $this->projects, $timeEntry->getProject());
 
                     $this->sentTimeEntries[] = $timeEntry->getId();
                     $timeEntrySent = true;
@@ -155,18 +167,21 @@ class SyncTimings extends Command
 
     /**
      * @param TimeEntry $entry
-     * @param array $config
-     * @param string $key
+     * @param array $clients
+     * @param string $clientKey
      *
      * @return void
      */
-    private function logTask(TimeEntry $entry, array $config, string $key)
+    private function logTask(TimeEntry $entry, array $clients, string $clientKey, array $projects = NULL, string $projectKey = NULL)
     {
         $task = new Task();
 
         $task->setDescription($this->buildTaskDescription($entry));
         $task->setTimeLog($this->buildTimeLog($entry));
-        $task->setClientId($config[$key]);
+        $task->setClientId($clients[$clientKey]);
+
+        if (isset($projects) && isset($projectKey))
+            $task->setProjectId($projects[$projectKey]);
 
         $this->invoiceNinjaClient->saveNewTask($task);
     }
@@ -206,48 +221,94 @@ class SyncTimings extends Command
 
     private function retrieveClientsForWorkspace($workspaceId)
     {
-        $togglClients = $this->togglClient->getClientsForWorkspace($workspaceId);
+        $this->togglClients = $this->togglClient->getClientsForWorkspace($workspaceId);
         $invoiceNinjaClients = $this->invoiceNinjaClient->getClients();
 
         $clients = Array();
 
-        foreach ($togglClients as $togglClient)
+        foreach ($this->togglClients as $togglClient)
         {
+            $found = false;
             foreach ($invoiceNinjaClients as $invoiceNinjaClient)
             {
-                if (strcasecmp($togglClient->getName(), $invoiceNinjaClient->getName()) == 0)
+                if ($invoiceNinjaClient->getIsDeleted() == false && strcasecmp($togglClient->getName(), $invoiceNinjaClient->getName()) == 0)
+                {
                     $clients[$invoiceNinjaClient->getName()] = $invoiceNinjaClient->getId();
+                    $found = true;
+                }
+            }
+            if (!$found)
+            {
+                $client = new InvoiceNinjaClientDto();
+
+                $client->setName($togglClient->getName());
+
+                $clients[$togglClient->getName()] = $this->invoiceNinjaClient->saveNewClient($client)->getId();
+
+                $this->io->success('Client ('. $togglClient->getName() . ') created in InvoiceNinja');
             }
         }
 
         return $clients;
     }
 
+    private function retrieveProjectsForWorkspace($workspaceId)
+    {
+        $togglProjects = $this->togglClient->getProjectsForWorkspace($workspaceId);
+        $invoiceNinjaProjects = $this->invoiceNinjaClient->getProjects();
+
+        $projects = Array();
+
+        foreach ($togglProjects as $togglProject)
+        {
+            $found = false;
+            foreach ($invoiceNinjaProjects as $invoiceNinjaProject)
+            {
+                if ($invoiceNinjaProject->getIsDeleted() == false && strcasecmp($togglProject->getName(), $invoiceNinjaProject->getName()) == 0)
+                {
+                    $projects[$invoiceNinjaProject->getName()] = $invoiceNinjaProject->getId();
+                    $found = true;
+                }
+            }
+            if (!$found)
+            {
+                $project = new InvoiceNinjaProject();
+
+                $project->setName($togglProject->getName());
+
+                foreach ($this->togglClients as $togglClient)
+                {
+                    if ($togglClient->getWid() == $workspaceId && $togglClient->getId() == $togglProject->getCid())
+                        $project->setClientId($this->clients[$togglClient->getName()]);
+                }
+
+                $projects[$togglProject->getName()] = $this->invoiceNinjaClient->saveNewProject($project)->getId();
+
+                $this->io->success('Project ('. $togglProject->getName() . ') created in InvoiceNinja');
+            }
+        }
+
+        return $projects;
+    }
+
     private function retrieveSentTimeEntries()
     {
-        if (!file_exists('storage'))
-        {
-            mkdir('storage');
-        }
+        if (!file_exists($this->storageDir))
+            mkdir($this->storageDir, 0777, true);
 
-        if (!file_exists('storage/sent-time-entries'))
-        {
-            touch('storage/sent-time-entries');
-        }
+        if (!file_exists($this->storageDir . $this->storageFileName))
+            touch($this->storageDir . $this->storageFileName);
         
-        $this->sentTimeEntries = unserialize(file_get_contents('storage/sent-time-entries'));
+        $this->sentTimeEntries = unserialize(file_get_contents($this->storageDir . $this->storageFileName));
 
         if (!is_array($this->sentTimeEntries))
-        {
-            echo "Done!";
             $this->sentTimeEntries = Array();
-        }
 
         return $this->sentTimeEntries;
     }
 
     private function storeSentTimeEntries()
     {
-        file_put_contents('storage/sent-time-entries', serialize($this->sentTimeEntries));
+        file_put_contents($this->storageDir . $this->storageFileName, serialize($this->sentTimeEntries));
     }
 }
