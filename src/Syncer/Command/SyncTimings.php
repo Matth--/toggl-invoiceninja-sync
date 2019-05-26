@@ -72,6 +72,7 @@ class SyncTimings extends Command
         $this->invoiceNinjaClient = $invoiceNinjaClient;
         $this->clients = $clients;
         $this->projects = $projects;
+        $this->retrieveSentTimeEntries();
 
         parent::__construct();
     }
@@ -108,10 +109,14 @@ class SyncTimings extends Command
             foreach($detailedReport->getData() as $timeEntry) {
                 $timeEntrySent = false;
 
+                if (in_array($timeEntry->getId(), $this->sentTimeEntries))
+                    continue;
+
                 // Log the entry if the client key exists
                 if ($this->timeEntryCanBeLoggedByConfig($this->clients, $timeEntry->getClient(), $timeEntrySent)) {
                     $this->logTask($timeEntry, $this->clients, $timeEntry->getClient());
 
+                    $this->sentTimeEntries[] = $timeEntry->getId();
                     $timeEntrySent = true;
                 }
 
@@ -119,6 +124,7 @@ class SyncTimings extends Command
                 if ($this->timeEntryCanBeLoggedByConfig($this->projects, $timeEntry->getProject(), $timeEntrySent)) {
                     $this->logTask($timeEntry, $this->projects, $timeEntry->getProject());
 
+                    $this->sentTimeEntries[] = $timeEntry->getId();
                     $timeEntrySent = true;
                 }
 
@@ -127,6 +133,8 @@ class SyncTimings extends Command
                 }
             }
         }
+
+        $this->storeSentTimeEntries();
     }
 
     /**
@@ -213,5 +221,33 @@ class SyncTimings extends Command
         }
 
         return $clients;
+    }
+
+    private function retrieveSentTimeEntries()
+    {
+        if (!file_exists('storage'))
+        {
+            mkdir('storage');
+        }
+
+        if (!file_exists('storage/sent-time-entries'))
+        {
+            touch('storage/sent-time-entries');
+        }
+        
+        $this->sentTimeEntries = unserialize(file_get_contents('storage/sent-time-entries'));
+
+        if (!is_array($this->sentTimeEntries))
+        {
+            echo "Done!";
+            $this->sentTimeEntries = Array();
+        }
+
+        return $this->sentTimeEntries;
+    }
+
+    private function storeSentTimeEntries()
+    {
+        file_put_contents('storage/sent-time-entries', serialize($this->sentTimeEntries));
     }
 }
