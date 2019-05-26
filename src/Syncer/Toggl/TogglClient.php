@@ -2,10 +2,10 @@
 
 namespace Syncer\Toggl;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use JMS\Serializer\SerializerInterface;
 use Syncer\Dto\Toggl\Workspace;
-
+use Syncer\Dto\Toggl\Client;
 /**
  * Class TogglClient
  * @package Syncer\Toggl
@@ -37,7 +37,7 @@ class TogglClient
      * @param SerializerInterface $serializer
      * @param $api_key
      */
-    public function __construct(Client $client, SerializerInterface $serializer, $api_key)
+    public function __construct(GuzzleClient $client, SerializerInterface $serializer, $api_key)
     {
         $this->client = $client;
         $this->serializer = $serializer;
@@ -54,5 +54,17 @@ class TogglClient
         ]);
 
         return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Toggl\Workspace>', 'json');
+    }
+
+    /**
+     * @return array|Client[]
+     */
+    public function getClientsForWorkspace($workspaceId)
+    {
+        $response = $this->client->request('GET', self::VERSION . '/workspaces/' . $workspaceId . '/clients', [
+            'auth' => [$this->api_key, 'api_token'],
+        ]);
+
+        return $this->serializer->deserialize($response->getBody(), 'array<Syncer\Dto\Toggl\Client>', 'json');
     }
 }

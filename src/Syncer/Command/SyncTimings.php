@@ -4,7 +4,7 @@ namespace Syncer\Command;
 
 use Syncer\Dto\InvoiceNinja\Task;
 use Syncer\Dto\Toggl\TimeEntry;
-use Syncer\InvoiceNinja\Client as InvoiceNinjaClient;
+use Syncer\InvoiceNinja\InvoiceNinjaClient;
 use Syncer\Toggl\ReportsClient;
 use Syncer\Toggl\TogglClient;
 
@@ -103,6 +103,7 @@ class SyncTimings extends Command
 
         foreach ($workspaces as $workspace) {
             $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId());
+            $this->clients = array_merge($this->clients, $this->retrieveClientsForWorkspace($workspace->getId()));
 
             foreach($detailedReport->getData() as $timeEntry) {
                 $timeEntrySent = false;
@@ -193,5 +194,24 @@ class SyncTimings extends Command
         ]];
 
         return \GuzzleHttp\json_encode($timeLog);
+    }
+
+    private function retrieveClientsForWorkspace($workspaceId)
+    {
+        $togglClients = $this->togglClient->getClientsForWorkspace($workspaceId);
+        $invoiceNinjaClients = $this->invoiceNinjaClient->getClients();
+
+        $clients = Array();
+
+        foreach ($togglClients as $togglClient)
+        {
+            foreach ($invoiceNinjaClients as $invoiceNinjaClient)
+            {
+                if (strcasecmp($togglClient->getName(), $invoiceNinjaClient->getName()) == 0)
+                    $clients[$invoiceNinjaClient->getName()] = $invoiceNinjaClient->getId();
+            }
+        }
+
+        return $clients;
     }
 }

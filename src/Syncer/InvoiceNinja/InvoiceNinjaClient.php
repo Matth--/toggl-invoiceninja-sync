@@ -5,14 +5,15 @@ namespace Syncer\InvoiceNinja;
 use GuzzleHttp\Client as GuzzleClient;
 use JMS\Serializer\SerializerInterface;
 use Syncer\Dto\InvoiceNinja\Task;
+use Syncer\Dto\InvoiceNinja\Client;
 
 /**
- * Class Client
+ * Class InvoiceNinjaClient
  * @package Syncer\InvoiceNinja
  *
  * @author Matthieu Calie <matthieu@calie.be>
  */
-class Client
+class InvoiceNinjaClient
 {
     const VERSION = 'v1';
 
@@ -64,5 +65,22 @@ class Client
         ]);
 
         return $this->serializer->deserialize($res->getBody(), Task::class, 'json');
+    }
+
+    /**
+     * @return array|Client[]
+     */
+    public function getClients()
+    {
+        $response = $this->client->request('GET', self::VERSION . '/clients', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'X-Ninja-Token' => $this->api_token,
+                'X-Requested-With' => 'XMLHttpRequest',
+            ]
+        ]);
+
+        return $this->serializer->deserialize($response->getBody(), 'Syncer\Dto\InvoiceNinja\ClientsWrapper', 'json')->getData();
+
     }
 }

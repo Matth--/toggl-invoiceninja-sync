@@ -3,17 +3,23 @@
 namespace Syncer\Dto\Toggl;
 
 /**
- * Class Workspace
+ * Class Client
  * @package Syncer\Dto\Toggl
  *
- * @author Matthieu Calie <matthieu@calie.be>
+ * @author Clayton Liddell <admin@clayliddell.com>
  */
-class Workspace
+class Client
 {
     /**
      * @var integer
      */
     private $id;
+
+    /**
+     * @var String
+     */
+    private $name;
+
 
     /**
      * @return mixed
@@ -29,5 +35,21 @@ class Workspace
     public function setId(int $id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName(): String
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName(String $name)
+    {
+        $this->name = $name;
     }
 }

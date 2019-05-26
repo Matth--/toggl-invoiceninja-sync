@@ -1,0 +1,6 @@
+Syncer\Dto\InvoiceNinja\ClientsWrapper:
+    exclusion_policy: ALL
+    properties:
+        data:
+            type: array<Syncer\Dto\InvoiceNinja\Client>
+            exlude: false

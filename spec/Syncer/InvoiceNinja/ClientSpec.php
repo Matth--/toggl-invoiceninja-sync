@@ -5,7 +5,7 @@ namespace spec\Syncer\InvoiceNinja;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Syncer\Dto\InvoiceNinja\Task;
-use Syncer\InvoiceNinja\Client;
+use Syncer\InvoiceNinja\InvoiceNinjaClient as Client;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

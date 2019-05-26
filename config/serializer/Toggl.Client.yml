@@ -1,0 +1,9 @@
+Syncer\Dto\Toggl\Client:
+    exclusion_policy: ALL
+    properties:
+        id:
+            type: integer
+            exlude: false
+        name:
+            type: string
+            exclude: false

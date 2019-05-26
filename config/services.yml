@@ -54,7 +54,7 @@ services:
             - { base_uri: '%invoice_ninja.base_uri%', debug: '%debug%'}
 
     invoice_ninja.client:
-        class: Syncer\InvoiceNinja\Client
+        class: Syncer\InvoiceNinja\InvoiceNinjaClient
         arguments:
             - '@invoice_ninja.guzzle'
             - '@serializer'
