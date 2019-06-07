@@ -25,6 +25,7 @@ services:
             - '%projects%'
             - '%toggl.time_entries_storage_dir%'
             - '%toggl.time_entries_storage_file%'
+            - '%use_projects_as_clients%'
 
     toggl.guzzle.toggl:
         class: GuzzleHttp\Client

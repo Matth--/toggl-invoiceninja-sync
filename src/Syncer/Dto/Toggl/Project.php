@@ -44,7 +44,7 @@ class Project
     /**
      * @return mixed
      */
-    public function getCid(): int
+    public function getCid(): ?int
     {
         return $this->cid;
     }
@@ -52,7 +52,7 @@ class Project
     /**
      * @param mixed $cid
      */
-    public function setCid(int $cid)
+    public function setCid(?int $cid)
     {
         $this->cid = $cid;
     }

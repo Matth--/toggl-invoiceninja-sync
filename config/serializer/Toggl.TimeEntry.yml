@@ -27,6 +27,7 @@ Syncer\Dto\Toggl\TimeEntry:
             exclude: false
         duration:
             type: integer
+            serialized_name: dur
             exclude: false
         user:
             type: string

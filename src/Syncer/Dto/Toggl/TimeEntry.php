@@ -289,7 +289,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getClient(): string
+    public function getClient(): ?string
     {
         return $this->client;
     }
@@ -297,7 +297,7 @@ class TimeEntry
     /**
      * @param string $client
      */
-    public function setClient(string $client)
+    public function setClient(?string $client)
     {
         $this->client = $client;
     }
@@ -305,7 +305,7 @@ class TimeEntry
     /**
      * @return string
      */
-    public function getProject(): string
+    public function getProject(): ?string
     {
         return $this->project;
     }
@@ -313,7 +313,7 @@ class TimeEntry
     /**
      * @param string $project
      */
-    public function setProject(string $project)
+    public function setProject(?string $project)
     {
         $this->project = $project;
     }
