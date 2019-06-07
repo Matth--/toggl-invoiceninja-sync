@@ -141,22 +141,22 @@ class SyncTimings extends Command
 
                 // Since all Toggl time entries require there to be a project before there can be a client,
                 // a project is required, but a client is not.
-                if ($timeEntryProject === null) {
+                if (!isset($timeEntryProject)) {
                     $this->io->warning('No project set for TimeEntry (' . $timeEntry->getDescription() . ')');
                 }
 
-                else if ($timeEntryClient === null) {
+                else if (!isset($timeEntryClient)) {
                     if ($this->useProjectsAsClients) {
                         $timeEntryClient = $timeEntryProject;
                         $workspaceClients[$timeEntryProject] = $this->getInvoiceNinjaClientIdForProject($timeEntryProject);
                     } else {
-                        $timeEntryProject = null;
+                        $timeEntryProject = NULL;
                         $this->io->warning('No client set for TimeEntry (' . $timeEntry->getDescription() . ')');
                         $this->io->warning("To allow using projects as clients enable 'use_projects_as_clients' in parameters config file");
                     }
                 }
 
-                if ($timeEntryProject !== null) {
+                if (isset($timeEntryProject)) {
                     $this->logTask($timeEntry, $workspaceClients, $timeEntryClient, $workspaceProjects, $timeEntryProject);
 
                     $this->sentTimeEntries[] = $timeEntry->getId();
@@ -308,7 +308,7 @@ class SyncTimings extends Command
 
                     $project->setName($togglProject->getName());
 
-                    if ($togglProject->getCid() !== null) {
+                    if ($togglProject->getCid() !== NULL) {
                         foreach ($togglClients as $togglClient) {
                             if ($togglClient->getWid() == $workspaceId && $togglClient->getId() == $togglProject->getCid()) {
                                 $project->setClientId($workspaceClients[$togglClient->getName()]);
@@ -349,7 +349,7 @@ class SyncTimings extends Command
     private function getInvoiceNinjaClientIdForProject(string $projectName): ?string
     {
         $invoiceNinjaProjects  = $this->invoiceNinjaClient->getProjects();
-        $invoiceNinjaClientId = null;
+        $invoiceNinjaClientId = NULL;
 
         foreach ($invoiceNinjaProjects as $invoiceNinjaProject) {
             if ($invoiceNinjaProject->getName() == $projectName) {
