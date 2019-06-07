@@ -346,7 +346,7 @@ class SyncTimings extends Command
      * @param  string $projectName
      * @return string
      */
-    private function getInvoiceNinjaClientIdForProject(string $projectName): ?string
+    private function getInvoiceNinjaClientIdForProject(string $projectName): ?int
     {
         $invoiceNinjaProjects  = $this->invoiceNinjaClient->getProjects();
         $invoiceNinjaClientId = NULL;
