@@ -178,22 +178,6 @@ class SyncTimings extends Command
     }
 
     /**
-     * @param array $config
-     * @param string $entryKey
-     * @param bool $hasAlreadyBeenSent
-     *
-     * @return bool
-     */
-    private function timeEntryCanBeLoggedByConfig(array $config, string $entryKey, bool $hasAlreadyBeenSent): bool
-    {
-        if ($hasAlreadyBeenSent) {
-            return false;
-        }
-
-        return (is_array($config) && array_key_exists($entryKey, $config));
-    }
-
-    /**
      * @param TimeEntry $entry
      * @param array $clients
      * @param string $clientKey
