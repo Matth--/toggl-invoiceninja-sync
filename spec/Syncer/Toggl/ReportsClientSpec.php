@@ -30,6 +30,6 @@ class ReportsClientSpec extends ObjectBehavior
 
         $serializer->deserialize('body', DetailedReport::class, 'json')->shouldBeCalled();
 
-        $this->getDetailedReport(1);
+        $this->getDetailedReport(1, 1);
     }
 }
