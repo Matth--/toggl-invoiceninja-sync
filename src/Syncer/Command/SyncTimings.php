@@ -69,6 +69,11 @@ class SyncTimings extends Command
     private $useProjectsAsClients;
 
     /**
+     * @var int
+     */
+    private $sinceDaysAgo;
+
+    /**
      * SyncTimings constructor.
      *
      * @param TogglClient $togglClient
@@ -81,21 +86,22 @@ class SyncTimings extends Command
         TogglClient $togglClient,
         ReportsClient $reportsClient,
         InvoiceNinjaClient $invoiceNinjaClient,
-        $clients,
-        $projects,
-        String $storageDir,
-        String $storageFileName,
-        bool $useProjectsAsClients
+        ?array $clients,
+        ?array $projects,
+        string $storageDir,
+        string $storageFileName,
+        ?bool $useProjectsAsClients,
+        ?int $sinceDaysAgo
     ) {
         $this->togglClient = $togglClient;
         $this->reportsClient = $reportsClient;
         $this->invoiceNinjaClient = $invoiceNinjaClient;
-        $this->clients = $clients;
-        $this->projects = $projects;
+        $this->clients = $clients ?: [];
+        $this->projects = $projects ?: [];
         $this->storageDir = $storageDir;
         $this->storageFileName = $storageFileName;
-        $this->useProjectsAsClients = $useProjectsAsClients;
-        $this->retrieveSentTimeEntries();
+        $this->useProjectsAsClients = $useProjectsAsClients ?: false;
+        $this->sinceDaysAgo = $sinceDaysAgo ?: 1;
 
         parent::__construct();
     }
@@ -125,8 +131,10 @@ class SyncTimings extends Command
             return;
         }
 
+        $sentTimeEntries = $this->retrieveSentTimeEntries();
+
         foreach ($workspaces as $workspace) {
-            $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId());
+            $detailedReport = $this->reportsClient->getDetailedReport($workspace->getId(), $this->sinceDaysAgo);
             $workspaceClients = array_merge($this->clients, $this->retrieveClientsForWorkspace($workspace->getId(), $this->clients));
             $workspaceProjects = array_merge($this->projects, $this->retrieveProjectsForWorkspace($workspace->getId(), $workspaceClients, $this->projects));
 
@@ -135,7 +143,7 @@ class SyncTimings extends Command
                 $timeEntryClient = $timeEntry->getClient();
                 $timeEntryProject = $timeEntry->getProject();
 
-                if (in_array($timeEntry->getId(), $this->sentTimeEntries)) {
+                if (in_array($timeEntry->getId(), $sentTimeEntries)) {
                     continue;
                 }
 
@@ -143,9 +151,7 @@ class SyncTimings extends Command
                 // a project is required, but a client is not.
                 if (!isset($timeEntryProject)) {
                     $this->io->warning('No project set for TimeEntry (' . $timeEntry->getDescription() . ')');
-                }
-
-                else if (!isset($timeEntryClient)) {
+                } else if (!isset($timeEntryClient)) {
                     if ($this->useProjectsAsClients) {
                         $timeEntryClient = $timeEntryProject;
                         $workspaceClients[$timeEntryProject] = $this->getInvoiceNinjaClientIdForProject($timeEntryProject);
@@ -159,12 +165,12 @@ class SyncTimings extends Command
                 if (isset($timeEntryProject)) {
                     $this->logTask($timeEntry, $workspaceClients, $timeEntryClient, $workspaceProjects, $timeEntryProject);
 
-                    $this->sentTimeEntries[] = $timeEntry->getId();
+                    $sentTimeEntries[] = $timeEntry->getId();
                     $timeEntrySent = true;
                 } else {
                     $this->logTask($timeEntry);
 
-                    $this->sentTimeEntries[] = $timeEntry->getId();
+                    $sentTimeEntries[] = $timeEntry->getId();
                     $timeEntrySent = true;
                 }
 
@@ -174,7 +180,7 @@ class SyncTimings extends Command
             }
         }
 
-        $this->storeSentTimeEntries();
+        $this->storeSentTimeEntries($sentTimeEntries);
     }
 
     /**
@@ -325,6 +331,8 @@ class SyncTimings extends Command
 
                         $project->setClientId($workspaceClients[$togglProject->getName()]);
                     } else {
+                        $clientPresent = false;
+
                         $this->io->error('Client not provided for Project ('. $togglProject->getName() . ') in Toggl');
                         $this->io->warning("To allow using projects as clients enable 'use_projects_as_clients' in parameters config file");
                     }
@@ -375,13 +383,13 @@ class SyncTimings extends Command
             touch($this->storageDir . $this->storageFileName);
         }
         
-        $this->sentTimeEntries = unserialize(file_get_contents($this->storageDir . $this->storageFileName));
+        $sentTimeEntries = unserialize(file_get_contents($this->storageDir . $this->storageFileName));
 
-        if (!is_array($this->sentTimeEntries)) {
-            $this->sentTimeEntries = [];
+        if (!is_array($sentTimeEntries)) {
+            $sentTimeEntries = [];
         }
 
-        return $this->sentTimeEntries;
+        return $sentTimeEntries;
     }
 
     /**
@@ -389,8 +397,8 @@ class SyncTimings extends Command
      *
      * @return void
      */
-    private function storeSentTimeEntries()
+    private function storeSentTimeEntries($sentTimeEntries)
     {
-        file_put_contents($this->storageDir . $this->storageFileName, serialize($this->sentTimeEntries));
+        file_put_contents($this->storageDir . $this->storageFileName, serialize($sentTimeEntries));
     }
 }

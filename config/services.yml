@@ -21,11 +21,12 @@ services:
             - '@toggl.client.toggl'
             - '@toggl.client.reports'
             - '@invoice_ninja.client'
-            - '%clients%'
-            - '%projects%'
+            - '@?%clients%'
+            - '@?%projects%'
             - '%toggl.time_entries_storage_dir%'
             - '%toggl.time_entries_storage_file%'
-            - '%use_projects_as_clients%'
+            - '@?%use_projects_as_clients%'
+            - '@?%since_days_ago%'
 
     toggl.guzzle.toggl:
         class: GuzzleHttp\Client

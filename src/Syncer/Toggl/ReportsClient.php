@@ -46,19 +46,20 @@ class ReportsClient
     }
 
     /**
-     * Get detailed report from since yesterday
+     * Get detailed report from since provided numbers of days ago
      *
      * @param int $workspaceId
+     * @param int $sinceDaysAgo
      * @return array|\JMS\Serializer\scalar|object|DetailedReport
      */
-    public function getDetailedReport(int $workspaceId)
+    public function getDetailedReport(int $workspaceId, int $sinceDaysAgo)
     {
         $res = $this->client->request('GET', self::VERSION . '/details', [
             'auth' => [$this->api_key, 'api_token'],
             'query' => [
                 'user_agent' => 'matthieu@calie.be',
                 'workspace_id' => $workspaceId,
-                'since' => Carbon::yesterday()->format('Y-m-d')
+                'since' => Carbon::now()->subDays($sinceDaysAgo)->format('Y-m-d')
             ]
         ]);
 
