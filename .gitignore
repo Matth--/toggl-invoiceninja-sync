@@ -1,4 +1,6 @@
-config/parameters.yml
-vendor
-bin
+.env.local
+composer.lock
 coverage.xml
+config/parameters.yml
+/var/
+vendor

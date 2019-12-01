@@ -1,0 +1,63 @@
+services:
+    _defaults:
+        autowire: true
+        bind:
+            $clients: '%clients%'
+            $projects: '%projects%'
+
+    ### Application Services
+    Matth\Synchronizer\:
+        resource: '../..'
+        exclude: '../../{Dto}'
+
+    Matth\Synchronizer\Command\:
+        resource: '../../Command/**/*.php'
+        tags: ['console.command']
+
+    Matth\Synchronizer\InvoiceNinja\InvoiceNinjaClient:
+        arguments:
+            $client: '@guzzle.invoiceninja'
+
+    Matth\Synchronizer\Toggl\ReportsClient:
+        arguments:
+            $client: '@guzzle.toggl_reporting'
+
+    Matth\Synchronizer\Toggl\TogglClient:
+        arguments:
+            $client: '@guzzle.toggl'
+
+    ### Infrastructure Services
+    Symfony\Component\Console\Application:
+        public: true
+
+    Symfony\Component\Serializer\SerializerInterface:
+        factory: ['@Matth\Synchronizer\Factory\SerializerFactory', 'createSerializer']
+
+    Psr\Cache\CacheItemPoolInterface:
+        factory: ['@Matth\Synchronizer\Factory\CacheFactory', 'createCache']
+        arguments: ['%kernel.project_dir%/storage']
+
+    guzzle.toggl:
+        class: GuzzleHttp\Client
+        arguments:
+            -
+                base_uri: '%toggl.base_uri%'
+                auth: ['%toggl.api_key%', 'api_token']
+
+    guzzle.toggl_reporting:
+        class: GuzzleHttp\Client
+        arguments:
+            -   base_uri: '%toggl.reports_base_uri%'
+                auth: ['%toggl.api_key%', 'api_token']
+
+    guzzle.invoiceninja:
+        class: GuzzleHttp\Client
+        arguments:
+            -
+                base_uri: '%invoice_ninja.base_uri%'
+                headers:
+                    "X-Ninja-Token": '%invoice_ninja.api_key%'
+                    'Content-Type': 'application/json'
+                    'X-Requested-With': 'XMLHttpRequest'
+
+

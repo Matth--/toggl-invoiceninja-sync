@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+
+<?php
+
+// Autoload
+require __DIR__ . '/../vendor/autoload.php';
+
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Matth\Synchronizer\Kernel;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Dotenv\Dotenv;
+
+(new Dotenv(true))->loadEnv(__DIR__ . '/../.env');
+
+// Setting up the Dependency Container
+$kernel = new Kernel(getenv('APP_ENV'), getenv('APP_DEBUG'));
+$kernel->boot();
+
+AnnotationRegistry::registerLoader('class_exists');
+
+$container = $kernel->getContainer();
+$application = $container->get(Application::class);
+$application->run();
